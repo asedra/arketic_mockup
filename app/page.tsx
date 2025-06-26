@@ -48,6 +48,8 @@ import {
   X,
   Check,
   ChevronDown,
+  Building2,
+  AlertTriangle,
 } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
@@ -87,6 +89,11 @@ import {
 } from "recharts"
 import { useTheme } from "next-themes"
 import { DirectoryTree } from "@/components/directory-tree"
+import { DirectoryTab } from "./my-organization/DirectoryTab"
+import { OrgChartTab } from "./my-organization/OrgChartTab/OrgChartTab"
+import { ServicesTab } from "./my-organization/ServicesTab/ServicesTab"
+import { IsoTab } from "./my-organization/IsoTab/IsoTab"
+import { DocumentsTab } from "./my-organization/IsoDocumentsTab/DocumentsTab"
 
 type Section = "assistants" | "chat" | "knowledge" | "workflows" | "templates" | "analytics" | "directory" | "groups" | "organization-settings" | "access-control"
 
@@ -286,6 +293,7 @@ export default function ArketicClone() {
       initials: string;
     }>;
   } | null>(null);
+  const [activeOrgTab, setActiveOrgTab] = useState("directory")
 
   useEffect(() => {
     setIntensities(Array.from({ length: 168 }, () => Math.random()))
@@ -426,8 +434,8 @@ export default function ArketicClone() {
           }`}
           onClick={() => setActiveSection("directory")}
         >
-          <Users className="h-4 w-4" />
-          <span>Directory</span>
+          <Building2 className="h-4 w-4" />
+          <span>My Organization</span>
         </Button>
         <Button
           variant="ghost"
@@ -1686,36 +1694,67 @@ export default function ArketicClone() {
     return (
       <div className="flex-1 overflow-auto p-6 bg-slate-50/50 dark:bg-slate-900/50">
         <div className="max-w-7xl mx-auto">
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Directory</h1>
-              <p className="text-slate-600 dark:text-slate-400 mt-1">Manage your organization's sites, departments, and users</p>
+          {/* Header */}
+          <div className="mb-6">
+            <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-2">
+              My Organization
+            </h1>
+            
+            {/* Metric Ribbon */}
+            <div className="flex items-center gap-6 text-sm">
+              <div className="flex items-center gap-2">
+                <Building2 className="h-4 w-4 text-blue-600" />
+                <span className="text-slate-600 dark:text-slate-400">Sites</span>
+                <Badge variant="secondary">2</Badge>
+              </div>
+              <div className="flex items-center gap-2">
+                <Users className="h-4 w-4 text-purple-600" />
+                <span className="text-slate-600 dark:text-slate-400">Departments</span>
+                <Badge variant="secondary">5</Badge>
+              </div>
+              <div className="flex items-center gap-2">
+                <Users className="h-4 w-4 text-green-600" />
+                <span className="text-slate-600 dark:text-slate-400">Users</span>
+                <Badge variant="secondary">64</Badge>
+              </div>
+              <div className="flex items-center gap-2">
+                <AlertTriangle className="h-4 w-4 text-orange-600" />
+                <span className="text-slate-600 dark:text-slate-400">ISO Gaps</span>
+                <Badge variant="secondary">3</Badge>
+              </div>
             </div>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg">
-                  <Plus className="h-4 w-4 mr-2" />
-                  Add New
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-48">
-                <DropdownMenuItem>
-                  <Globe className="h-4 w-4 mr-2" />
-                  Add Site
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <FolderPlus className="h-4 w-4 mr-2" />
-                  Add Department
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <User className="h-4 w-4 mr-2" />
-                  Add User
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
           </div>
 
-          <DirectoryTree />
+          {/* Secondary Tabs */}
+          <Tabs value={activeOrgTab} onValueChange={setActiveOrgTab} className="w-full">
+            <TabsList className="grid w-full grid-cols-5 mb-6">
+              <TabsTrigger value="directory">Directory</TabsTrigger>
+              <TabsTrigger value="org-chart">Org Chart</TabsTrigger>
+              <TabsTrigger value="services">Services & Processes</TabsTrigger>
+              <TabsTrigger value="iso">ISO Compliance</TabsTrigger>
+              <TabsTrigger value="documents">ISO Documents</TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="directory" className="mt-0">
+              <DirectoryTab />
+            </TabsContent>
+
+            <TabsContent value="org-chart" className="mt-0">
+              <OrgChartTab />
+            </TabsContent>
+
+            <TabsContent value="services" className="mt-0">
+              <ServicesTab />
+            </TabsContent>
+
+            <TabsContent value="iso" className="mt-0">
+              <IsoTab />
+            </TabsContent>
+
+            <TabsContent value="documents" className="mt-0">
+              <DocumentsTab />
+            </TabsContent>
+          </Tabs>
         </div>
       </div>
     )

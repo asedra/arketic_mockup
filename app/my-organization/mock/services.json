@@ -1,0 +1,82 @@
+[
+  {
+    "id": "PROC_InvalidProduct",
+    "title": "Uygun Olmayan Ürün Yönetimi",
+    "owner": "Production Mgr",
+    "sla": "5 gün",
+    "iso": "10.2",
+    "kpi": [90, 92, 88, 91],
+    "department": "Production",
+    "status": "active"
+  },
+  {
+    "id": "PROC_Quotation",
+    "title": "Teklif Hazırlama",
+    "owner": "Sales Mgr",
+    "sla": "2 gün",
+    "iso": "8.2",
+    "kpi": [95, 93, 94, 96],
+    "department": "Sales",
+    "status": "active"
+  },
+  {
+    "id": "PROC_CustomerComplaint",
+    "title": "Müşteri Şikayet Yönetimi",
+    "owner": "Support Lead",
+    "sla": "24 saat",
+    "iso": "9.1",
+    "kpi": [88, 85, 90, 87],
+    "department": "Support",
+    "status": "active"
+  },
+  {
+    "id": "PROC_DesignReview",
+    "title": "Tasarım İnceleme Süreci",
+    "owner": "Engineering Lead",
+    "sla": "3 gün",
+    "iso": "8.3",
+    "kpi": [92, 94, 91, 93],
+    "department": "Engineering",
+    "status": "active"
+  },
+  {
+    "id": "PROC_MarketingCampaign",
+    "title": "Pazarlama Kampanyası Yönetimi",
+    "owner": "Marketing Mgr",
+    "sla": "1 hafta",
+    "iso": "8.5",
+    "kpi": [89, 91, 88, 90],
+    "department": "Marketing",
+    "status": "active"
+  },
+  {
+    "id": "PROC_QualityControl",
+    "title": "Kalite Kontrol Süreci",
+    "owner": "QA Lead",
+    "sla": "2 gün",
+    "iso": "8.6",
+    "kpi": [94, 96, 93, 95],
+    "department": "Production",
+    "status": "active"
+  },
+  {
+    "id": "PROC_DocumentControl",
+    "title": "Doküman Kontrol Süreci",
+    "owner": "QA Lead",
+    "sla": "3 gün",
+    "iso": "7.5.3",
+    "kpi": [93, 92, 94, 95],
+    "department": "Engineering",
+    "status": "active"
+  },
+  {
+    "id": "PROC_InternalAudit",
+    "title": "İç Denetim Süreci",
+    "owner": "Compliance Lead",
+    "sla": "1 hafta",
+    "iso": "9.2",
+    "kpi": [87, 89, 88, 90],
+    "department": "Support",
+    "status": "active"
+  }
+]
