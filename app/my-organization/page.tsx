@@ -4,14 +4,14 @@ import { useState } from "react"
 import { Building2, Users, AlertTriangle, Calendar } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
-import { DirectoryTab } from "./DirectoryTab"
 import { OrgChartTab } from "./OrgChartTab/OrgChartTab"
 import { ServicesTab } from "./ServicesTab/ServicesTab"
 import { IsoTab } from "./IsoTab/IsoTab"
 import { DocumentsTab } from "./IsoDocumentsTab/DocumentsTab"
+import { PeopleTab } from "./PeopleTab"
 
 export default function MyOrganizationPage() {
-  const [activeTab, setActiveTab] = useState("directory")
+  const [activeTab, setActiveTab] = useState("people")
 
   return (
     <div className="flex-1 overflow-auto p-6 bg-slate-50/50 dark:bg-slate-900/50">
@@ -50,15 +50,15 @@ export default function MyOrganizationPage() {
         {/* Secondary Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-5 mb-6">
-            <TabsTrigger value="directory">Directory</TabsTrigger>
+            <TabsTrigger value="people">People</TabsTrigger>
             <TabsTrigger value="org-chart">Org Chart</TabsTrigger>
             <TabsTrigger value="services">Services & Processes</TabsTrigger>
             <TabsTrigger value="iso">ISO Compliance</TabsTrigger>
             <TabsTrigger value="documents">ISO Documents</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="directory" className="mt-0">
-            <DirectoryTab />
+          <TabsContent value="people" className="mt-0">
+            <PeopleTab />
           </TabsContent>
 
           <TabsContent value="org-chart" className="mt-0">

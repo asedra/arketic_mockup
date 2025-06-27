@@ -89,7 +89,7 @@ import {
 } from "recharts"
 import { useTheme } from "next-themes"
 import { DirectoryTree } from "@/components/directory-tree"
-import { DirectoryTab } from "./my-organization/DirectoryTab"
+import { PeopleTab } from "./my-organization/PeopleTab"
 import { OrgChartTab } from "./my-organization/OrgChartTab/OrgChartTab"
 import { ServicesTab } from "./my-organization/ServicesTab/ServicesTab"
 import { IsoTab } from "./my-organization/IsoTab/IsoTab"
@@ -293,7 +293,7 @@ export default function ArketicClone() {
       initials: string;
     }>;
   } | null>(null);
-  const [activeOrgTab, setActiveOrgTab] = useState("directory")
+  const [activeOrgTab, setActiveOrgTab] = useState("people")
 
   useEffect(() => {
     setIntensities(Array.from({ length: 168 }, () => Math.random()))
@@ -1728,15 +1728,15 @@ export default function ArketicClone() {
           {/* Secondary Tabs */}
           <Tabs value={activeOrgTab} onValueChange={setActiveOrgTab} className="w-full">
             <TabsList className="grid w-full grid-cols-5 mb-6">
-              <TabsTrigger value="directory">Directory</TabsTrigger>
+              <TabsTrigger value="people">People</TabsTrigger>
               <TabsTrigger value="org-chart">Org Chart</TabsTrigger>
               <TabsTrigger value="services">Services & Processes</TabsTrigger>
               <TabsTrigger value="iso">ISO Compliance</TabsTrigger>
               <TabsTrigger value="documents">ISO Documents</TabsTrigger>
             </TabsList>
 
-            <TabsContent value="directory" className="mt-0">
-              <DirectoryTab />
+            <TabsContent value="people" className="mt-0">
+              <PeopleTab />
             </TabsContent>
 
             <TabsContent value="org-chart" className="mt-0">
