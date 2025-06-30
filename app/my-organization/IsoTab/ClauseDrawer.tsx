@@ -91,9 +91,8 @@ export function ClauseDrawer({ clause, selectedDepartment, isOpen, onClose }: Cl
 
           {/* Linked Services */}
           <div>
-            <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-3 flex items-center gap-2">
-              <Link className="h-4 w-4" />
-              Linked Services ({linkedServices.length})
+            <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-2">
+              Linked Service Catalog ({linkedServices.length})
             </h4>
             <div className="space-y-2">
               {linkedServices.length > 0 ? (
@@ -115,7 +114,7 @@ export function ClauseDrawer({ clause, selectedDepartment, isOpen, onClose }: Cl
                   </div>
                 ))
               ) : (
-                <p className="text-sm text-slate-500 italic">No services linked</p>
+                <p className="text-sm text-slate-500 italic">No service catalog linked</p>
               )}
             </div>
           </div>

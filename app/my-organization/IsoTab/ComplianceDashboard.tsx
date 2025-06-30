@@ -125,7 +125,7 @@ export function ComplianceDashboard({ clauses, selectedClause, onClauseSelect, h
             <Card className="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700">
               <CardHeader>
                 <CardTitle className="text-lg font-semibold text-slate-900 dark:text-slate-100">
-                  Linked Services ({selectedClause.linkedServices})
+                  Linked Service Catalog ({selectedClause.linkedServices})
                 </CardTitle>
               </CardHeader>
               <CardContent>

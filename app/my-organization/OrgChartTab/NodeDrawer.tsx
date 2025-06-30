@@ -111,7 +111,7 @@ export function NodeDrawer({ node, isOpen, onClose }: NodeDrawerProps) {
           <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="profile">Profile</TabsTrigger>
             <TabsTrigger value="jd">JD</TabsTrigger>
-            <TabsTrigger value="services">Services</TabsTrigger>
+            <TabsTrigger value="services">Service Catalog</TabsTrigger>
             <TabsTrigger value="tasks">Tasks</TabsTrigger>
           </TabsList>
 
@@ -181,7 +181,7 @@ export function NodeDrawer({ node, isOpen, onClose }: NodeDrawerProps) {
 
           <TabsContent value="services" className="mt-6">
             <div className="space-y-4">
-              <h4 className="font-semibold">Linked Services ({linkedServices.length})</h4>
+              <h4 className="font-semibold">Linked Service Catalog ({linkedServices.length})</h4>
               <div className="space-y-2">
                 {linkedServices.length > 0 ? (
                   linkedServices.map((service) => (
@@ -203,7 +203,7 @@ export function NodeDrawer({ node, isOpen, onClose }: NodeDrawerProps) {
                     </div>
                   ))
                 ) : (
-                  <p className="text-sm text-slate-500 italic">No services linked</p>
+                  <p className="text-sm text-slate-500 italic">No service catalog linked</p>
                 )}
               </div>
 

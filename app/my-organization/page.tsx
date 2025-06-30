@@ -5,7 +5,6 @@ import { Building2, Users, AlertTriangle, Calendar } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { OrgChartTab } from "./OrgChartTab/OrgChartTab"
-import { ServicesTab } from "./ServicesTab/ServicesTab"
 import { IsoTab } from "./IsoTab/IsoTab"
 import { DocumentsTab } from "./IsoDocumentsTab/DocumentsTab"
 import { PeopleTab } from "./PeopleTab"
@@ -49,10 +48,9 @@ export default function MyOrganizationPage() {
 
         {/* Secondary Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-5 mb-6">
+          <TabsList className="grid w-full grid-cols-4 mb-6">
             <TabsTrigger value="people">People</TabsTrigger>
             <TabsTrigger value="org-chart">Org Chart</TabsTrigger>
-            <TabsTrigger value="services">Services & Processes</TabsTrigger>
             <TabsTrigger value="iso">ISO Compliance</TabsTrigger>
             <TabsTrigger value="documents">ISO Documents</TabsTrigger>
           </TabsList>
@@ -63,10 +61,6 @@ export default function MyOrganizationPage() {
 
           <TabsContent value="org-chart" className="mt-0">
             <OrgChartTab />
-          </TabsContent>
-
-          <TabsContent value="services" className="mt-0">
-            <ServicesTab />
           </TabsContent>
 
           <TabsContent value="iso" className="mt-0">

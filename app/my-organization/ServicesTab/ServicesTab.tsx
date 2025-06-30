@@ -62,7 +62,7 @@ export function ServicesTab() {
       {/* Header */}
       <div>
         <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100">
-          Services & Processes
+          Service Catalog
         </h2>
         <p className="text-slate-600 dark:text-slate-400 mt-1">
           Manage your organization's service catalog and process workflows

@@ -80,8 +80,8 @@ export function DocumentsTable({ documents, onSelect, highlightedDocId }: Docume
         <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100">
           ISO Documents ({documents.length})
         </h3>
-        <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-          Click on any document to view details and navigate to related ISO clauses or services
+        <p className="text-sm text-slate-600 dark:text-slate-400 mb-6">
+          Click on any document to view details and navigate to related ISO clauses or service catalog
         </p>
       </div>
 

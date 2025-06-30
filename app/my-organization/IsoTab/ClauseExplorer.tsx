@@ -72,7 +72,7 @@ export function ClauseExplorer({ clauses, selectedClauseId, onClauseSelect, high
                       variant="outline"
                       className={`text-xs ${getStatusBadgeColor(clause.status)}`}
                     >
-                      {clause.linkedServices} services
+                      {clause.linkedServices} service catalog
                     </Badge>
                     {linkedDocsCount > 0 && (
                       <Badge 

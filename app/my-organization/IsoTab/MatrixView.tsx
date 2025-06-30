@@ -70,7 +70,9 @@ export function MatrixView({ clauses, onCellClick }: MatrixViewProps) {
                         : "text-rose-600 dark:text-rose-400 border-rose-200 dark:border-rose-800"
                       }
                     >
-                      {clause.linkedServices}
+                      <span className="text-sm text-slate-600 dark:text-slate-400">
+                        {clause.linkedServices} service catalog
+                      </span>
                     </Badge>
                   </div>
                   <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 line-clamp-2">

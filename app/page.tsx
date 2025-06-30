@@ -95,7 +95,7 @@ import { ServicesTab } from "./my-organization/ServicesTab/ServicesTab"
 import { IsoTab } from "./my-organization/IsoTab/IsoTab"
 import { DocumentsTab } from "./my-organization/IsoDocumentsTab/DocumentsTab"
 
-type Section = "assistants" | "chat" | "knowledge" | "workflows" | "templates" | "analytics" | "directory" | "groups" | "organization-settings" | "access-control"
+type Section = "assistants" | "chat" | "knowledge" | "services" | "workflows" | "templates" | "analytics" | "directory" | "groups" | "organization-settings" | "access-control"
 
 // Analytics Data
 const usageData = [
@@ -415,6 +415,16 @@ export default function ArketicClone() {
         >
           <Database className="h-4 w-4" />
           <span>Knowledge Base</span>
+        </Button>
+        <Button
+          variant="ghost"
+          className={`w-full justify-start text-white hover:bg-white/10 dark:hover:bg-white/5 gap-3 h-10 px-3 rounded-lg transition-all ${
+            activeSection === "services" ? "bg-white/10 dark:bg-white/5 text-blue-300 dark:text-blue-400" : ""
+          }`}
+          onClick={() => setActiveSection("services")}
+        >
+          <LayoutGrid className="h-4 w-4" />
+          <span>Service Catalog</span>
         </Button>
         <Button
           variant="ghost"
@@ -1727,10 +1737,9 @@ export default function ArketicClone() {
 
           {/* Secondary Tabs */}
           <Tabs value={activeOrgTab} onValueChange={setActiveOrgTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-5 mb-6">
+            <TabsList className="grid w-full grid-cols-4 mb-6">
               <TabsTrigger value="people">People</TabsTrigger>
               <TabsTrigger value="org-chart">Org Chart</TabsTrigger>
-              <TabsTrigger value="services">Services & Processes</TabsTrigger>
               <TabsTrigger value="iso">ISO Compliance</TabsTrigger>
               <TabsTrigger value="documents">ISO Documents</TabsTrigger>
             </TabsList>
@@ -1741,10 +1750,6 @@ export default function ArketicClone() {
 
             <TabsContent value="org-chart" className="mt-0">
               <OrgChartTab />
-            </TabsContent>
-
-            <TabsContent value="services" className="mt-0">
-              <ServicesTab />
             </TabsContent>
 
             <TabsContent value="iso" className="mt-0">
@@ -3155,6 +3160,14 @@ export default function ArketicClone() {
     </div>
   )
 
+  const renderServices = () => (
+    <div className="flex-1 overflow-auto p-6 bg-slate-50/50 dark:bg-slate-900/50">
+      <div className="max-w-7xl mx-auto">
+        <ServicesTab />
+      </div>
+    </div>
+  )
+
   const renderContent = () => {
     switch (activeSection) {
       case "analytics":
@@ -3165,6 +3178,8 @@ export default function ArketicClone() {
         return renderChat()
       case "knowledge":
         return renderKnowledge()
+      case "services":
+        return renderServices()
       case "workflows":
         return renderWorkflows()
       case "templates":
