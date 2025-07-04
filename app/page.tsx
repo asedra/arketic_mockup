@@ -1654,10 +1654,8 @@ export default function ArketicClone() {
                       <div className="col-span-1">
                         <Checkbox
                           checked={selectedKnowledgeItems.includes(item.id)}
-                          onCheckedChange={(e) => {
-                            e.stopPropagation()
-                            handleKnowledgeItemSelect(item.id)
-                          }}
+                          onClick={(e) => e.stopPropagation()}
+                          onCheckedChange={() => handleKnowledgeItemSelect(item.id)}
                         />
                       </div>
                       <div className="col-span-5">
