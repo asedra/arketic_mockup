@@ -50,6 +50,7 @@ import {
   ChevronDown,
   Building2,
   AlertTriangle,
+  ArrowLeft,
 } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
@@ -94,8 +95,9 @@ import { OrgChartTab } from "./my-organization/OrgChartTab/OrgChartTab"
 import { ServicesTab } from "./my-organization/ServicesTab/ServicesTab"
 import { IsoTab } from "./my-organization/IsoTab/IsoTab"
 import { DocumentsTab } from "./my-organization/IsoDocumentsTab/DocumentsTab"
+import { ComplianceLibraryTab } from "./knowledge/ComplianceLibraryTab"
 
-type Section = "assistants" | "chat" | "knowledge" | "services" | "workflows" | "templates" | "analytics" | "directory" | "groups" | "organization-settings" | "access-control"
+type Section = "assistants" | "chat" | "knowledge" | "compliance" | "services" | "workflows" | "templates" | "analytics" | "directory" | "groups" | "organization-settings" | "access-control"
 
 // Analytics Data
 const usageData = [
@@ -266,6 +268,7 @@ export default function ArketicClone() {
   const [selectedAssistant, setSelectedAssistant] = useState("ChatGPT 4o")
   const [chatMessage, setChatMessage] = useState("")
   const [selectedKnowledgeItems, setSelectedKnowledgeItems] = useState<number[]>([])
+  const [selectedKnowledgeItem, setSelectedKnowledgeItem] = useState<number | null>(null)
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
   const [sortBy, setSortBy] = useState("recent")
   const [dateRange, setDateRange] = useState("7d")
@@ -308,6 +311,14 @@ export default function ArketicClone() {
 
   const handleKnowledgeItemSelect = (id: number) => {
     setSelectedKnowledgeItems((prev) => (prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]))
+  }
+
+  const handleKnowledgeItemClick = (id: number) => {
+    setSelectedKnowledgeItem(id)
+  }
+
+  const handleBackToKnowledgeList = () => {
+    setSelectedKnowledgeItem(null)
   }
 
   const handleSendMessage = () => {
@@ -415,6 +426,16 @@ export default function ArketicClone() {
         >
           <Database className="h-4 w-4" />
           <span>Knowledge Base</span>
+        </Button>
+        <Button
+          variant="ghost"
+          className={`w-full justify-start text-white hover:bg-white/10 dark:hover:bg-white/5 gap-3 h-10 px-3 rounded-lg transition-all ${
+            activeSection === "compliance" ? "bg-white/10 dark:bg-white/5 text-blue-300 dark:text-blue-400" : ""
+          }`}
+          onClick={() => setActiveSection("compliance")}
+        >
+          <Shield className="h-4 w-4" />
+          <span>Compliance Library</span>
         </Button>
         <Button
           variant="ghost"
@@ -1397,181 +1418,322 @@ export default function ArketicClone() {
     </div>
   )
 
-  const renderKnowledge = () => (
-    <div className="flex-1 flex flex-col bg-slate-50/50">
-      <div className="p-6 border-b bg-white/80 backdrop-blur-sm">
-        <div className="flex items-center gap-4">
-          <div className="h-10 w-10 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl flex items-center justify-center text-white">
-            <Database className="h-5 w-5" />
+  const renderKnowledge = () => {
+    // If a knowledge item is selected, show the detail view
+    if (selectedKnowledgeItem) {
+      const selectedItem = knowledgeItems.find(item => item.id === selectedKnowledgeItem)
+      if (!selectedItem) return null
+
+      return (
+        <div className="flex-1 flex flex-col bg-slate-50/50">
+          <div className="p-6 border-b bg-white/80 backdrop-blur-sm">
+            <div className="flex items-center gap-4">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleBackToKnowledgeList}
+                className="h-8 w-8 p-0"
+              >
+                <ArrowLeft className="h-4 w-4" />
+              </Button>
+              <div className="h-10 w-10 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl flex items-center justify-center text-white">
+                <Database className="h-5 w-5" />
+              </div>
+              <div>
+                <h2 className="text-xl font-bold text-slate-900">{selectedItem.name}</h2>
+                <p className="text-slate-600 text-sm">Knowledge Item Details</p>
+              </div>
+              <Badge variant="outline" className="ml-auto">
+                {selectedItem.type}
+              </Badge>
+            </div>
           </div>
-          <div>
-            <h2 className="text-xl font-bold text-slate-900">Knowledge Base</h2>
-            <p className="text-slate-600 text-sm">Organize and connect your company's information to AI</p>
+
+          <div className="p-6">
+            <div className="max-w-7xl mx-auto">
+              <Card className="mb-6 bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200">
+                <CardContent className="p-6">
+                  <div className="flex items-start gap-4">
+                    <div className="h-12 w-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center text-white">
+                      <Database className="h-6 w-6" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-semibold text-slate-900 mb-2">{selectedItem.name}</h3>
+                      <p className="text-slate-600 text-sm mb-4">
+                        Manage and organize content within this knowledge item. Upload files, sync directories, or create new folders to structure your information.
+                      </p>
+                      <div className="flex items-center gap-3">
+                        <Button
+                          size="sm"
+                          className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
+                        >
+                          <Plus className="h-4 w-4 mr-2" />
+                          Add Knowledge
+                        </Button>
+                        <Button variant="outline" size="sm">
+                          <Upload className="h-4 w-4 mr-2" />
+                          Upload Files
+                        </Button>
+                        <Button variant="outline" size="sm">
+                          <RefreshCw className="h-4 w-4 mr-2" />
+                          Sync Directories
+                        </Button>
+                        <Button variant="outline" size="sm">
+                          <FolderPlus className="h-4 w-4 mr-2" />
+                          New Folder
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-white border-slate-200">
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-lg">Content Items</CardTitle>
+                    <div className="flex items-center gap-2">
+                      <Button variant="outline" size="sm">
+                        <Filter className="h-4 w-4 mr-2" />
+                        Filter
+                      </Button>
+                      <Button variant="outline" size="sm">
+                        <SortDesc className="h-4 w-4 mr-2" />
+                        Sort
+                      </Button>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent className="p-0">
+                  <div className="border-b bg-slate-50 p-4">
+                    <div className="grid grid-cols-12 gap-4 text-sm font-medium text-slate-600">
+                      <div className="col-span-1">
+                        <Checkbox />
+                      </div>
+                      <div className="col-span-5">Name</div>
+                      <div className="col-span-2">Type</div>
+                      <div className="col-span-2">Size</div>
+                      <div className="col-span-2">Last Modified</div>
+                    </div>
+                  </div>
+
+                  <div className="p-4 text-center text-slate-500">
+                    <div className="h-16 w-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <FileText className="h-8 w-8 text-slate-400" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-slate-900 mb-2">No content yet</h3>
+                    <p className="text-slate-600 mb-4 max-w-md mx-auto">
+                      Start by uploading files, syncing directories, or creating new folders to organize your knowledge.
+                    </p>
+                    <div className="flex items-center justify-center gap-3">
+                      <Button size="sm" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white">
+                        <Upload className="h-4 w-4 mr-2" />
+                        Upload Files
+                      </Button>
+                      <Button variant="outline" size="sm">
+                        <RefreshCw className="h-4 w-4 mr-2" />
+                        Sync Directories
+                      </Button>
+                      <Button variant="outline" size="sm">
+                        <FolderPlus className="h-4 w-4 mr-2" />
+                        New Folder
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </div>
-          <Badge variant="outline" className="ml-auto">
-            General Knowledge
-          </Badge>
         </div>
-      </div>
+      )
+    }
 
-      <div className="p-6">
-        <div className="max-w-7xl mx-auto">
-          <Card className="mb-6 bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200">
-            <CardContent className="p-6">
-              <div className="flex items-start gap-4">
-                <div className="h-12 w-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center text-white">
-                  <Database className="h-6 w-6" />
+    // Default knowledge list view
+    return (
+      <div className="flex-1 flex flex-col bg-slate-50/50">
+        <div className="p-6 border-b bg-white/80 backdrop-blur-sm">
+          <div className="flex items-center gap-4">
+            <div className="h-10 w-10 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl flex items-center justify-center text-white">
+              <Database className="h-5 w-5" />
+            </div>
+            <div>
+              <h2 className="text-xl font-bold text-slate-900">Knowledge Base</h2>
+              <p className="text-slate-600 text-sm">Organize and connect your company's information to AI</p>
+            </div>
+            <Badge variant="outline" className="ml-auto">
+              General Knowledge
+            </Badge>
+          </div>
+        </div>
+
+        <div className="p-6">
+          <div className="max-w-7xl mx-auto">
+            <Card className="mb-6 bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200">
+              <CardContent className="p-6">
+                <div className="flex items-start gap-4">
+                  <div className="h-12 w-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center text-white">
+                    <Database className="h-6 w-6" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-slate-900 mb-2">General Knowledge</h3>
+                    <p className="text-slate-600 text-sm mb-4">
+                      Organize your company's essential information and connect it to your AI assistants for seamless
+                      access in chats.
+                    </p>
+                    <div className="flex items-center gap-3">
+                      <Button
+                        size="sm"
+                        className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
+                      >
+                        <Plus className="h-4 w-4 mr-2" />
+                        Add Knowledge
+                      </Button>
+                      <Button variant="outline" size="sm">
+                        <Upload className="h-4 w-4 mr-2" />
+                        Upload Files
+                      </Button>
+                      <Button variant="outline" size="sm">
+                        <RefreshCw className="h-4 w-4 mr-2" />
+                        Sync Integrations
+                      </Button>
+                      <Button variant="outline" size="sm">
+                        <FolderPlus className="h-4 w-4 mr-2" />
+                        New Folder
+                      </Button>
+                    </div>
+                  </div>
                 </div>
-                <div className="flex-1">
-                  <h3 className="font-semibold text-slate-900 mb-2">General Knowledge</h3>
-                  <p className="text-slate-600 text-sm mb-4">
-                    Organize your company's essential information and connect it to your AI assistants for seamless
-                    access in chats.
-                  </p>
-                  <div className="flex items-center gap-3">
-                    <Button
-                      size="sm"
-                      className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
-                    >
-                      <Plus className="h-4 w-4 mr-2" />
-                      Add Content
+              </CardContent>
+            </Card>
+
+            <Card className="bg-white border-slate-200">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-lg">Knowledge Items</CardTitle>
+                  <div className="flex items-center gap-2">
+                    <Button variant="outline" size="sm">
+                      <Filter className="h-4 w-4 mr-2" />
+                      Filter
                     </Button>
                     <Button variant="outline" size="sm">
-                      <Upload className="h-4 w-4 mr-2" />
-                      Upload Files
-                    </Button>
-                    <Button variant="outline" size="sm">
-                      <RefreshCw className="h-4 w-4 mr-2" />
-                      Sync Integrations
-                    </Button>
-                    <Button variant="outline" size="sm">
-                      <FolderPlus className="h-4 w-4 mr-2" />
-                      New Folder
+                      <SortDesc className="h-4 w-4 mr-2" />
+                      Sort
                     </Button>
                   </div>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-white border-slate-200">
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-lg">Knowledge Items</CardTitle>
-                <div className="flex items-center gap-2">
-                  <Button variant="outline" size="sm">
-                    <Filter className="h-4 w-4 mr-2" />
-                    Filter
-                  </Button>
-                  <Button variant="outline" size="sm">
-                    <SortDesc className="h-4 w-4 mr-2" />
-                    Sort
-                  </Button>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent className="p-0">
-              <div className="border-b bg-slate-50 p-4">
-                <div className="grid grid-cols-12 gap-4 text-sm font-medium text-slate-600">
-                  <div className="col-span-1">
-                    <Checkbox
-                      checked={selectedKnowledgeItems.length === knowledgeItems.length}
-                      onCheckedChange={(checked) => {
-                        if (checked) {
-                          setSelectedKnowledgeItems(knowledgeItems.map((item) => item.id))
-                        } else {
-                          setSelectedKnowledgeItems([])
-                        }
-                      }}
-                    />
-                  </div>
-                  <div className="col-span-5">Name</div>
-                  <div className="col-span-2">Owner</div>
-                  <div className="col-span-2">Size</div>
-                  <div className="col-span-2">Last Modified</div>
-                </div>
-              </div>
-
-              {knowledgeItems.map((item, index) => (
-                <div
-                  key={item.id}
-                  className={`p-4 hover:bg-slate-50 transition-colors ${index !== knowledgeItems.length - 1 ? "border-b" : ""}`}
-                >
-                  <div className="grid grid-cols-12 gap-4 items-center text-sm">
+              </CardHeader>
+              <CardContent className="p-0">
+                <div className="border-b bg-slate-50 p-4">
+                  <div className="grid grid-cols-12 gap-4 text-sm font-medium text-slate-600">
                     <div className="col-span-1">
                       <Checkbox
-                        checked={selectedKnowledgeItems.includes(item.id)}
-                        onCheckedChange={() => handleKnowledgeItemSelect(item.id)}
+                        checked={selectedKnowledgeItems.length === knowledgeItems.length}
+                        onCheckedChange={(checked) => {
+                          if (checked) {
+                            setSelectedKnowledgeItems(knowledgeItems.map((item) => item.id))
+                          } else {
+                            setSelectedKnowledgeItems([])
+                          }
+                        }}
                       />
                     </div>
-                    <div className="col-span-5">
-                      <div className="flex items-center gap-3">
-                        <div className="h-8 w-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center text-white text-xs font-medium">
-                          {item.type === "PDF" ? "PDF" : item.type === "Website" ? "WEB" : "DOC"}
-                        </div>
-                        <div>
-                          <div className="font-medium text-slate-900">{item.name}</div>
-                          <div className="text-xs text-slate-500">{item.pages}</div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-span-2">
-                      <div className="flex items-center gap-2">
-                        <Avatar className="h-6 w-6">
-                          <AvatarFallback className="text-xs">
-                            {item.owner.replace("@", "").substring(0, 2).toUpperCase()}
-                          </AvatarFallback>
-                        </Avatar>
-                        <span className="text-slate-600">{item.owner}</span>
-                      </div>
-                    </div>
-                    <div className="col-span-2 text-slate-600">{item.size}</div>
-                    <div className="col-span-2 flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <Badge variant={item.status === "synced" ? "default" : "secondary"} className="text-xs">
-                          {item.status}
-                        </Badge>
-                        <span className="text-slate-500 text-xs">{item.lastEdited}</span>
-                      </div>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                            <MoreHorizontal className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem>Edit</DropdownMenuItem>
-                          <DropdownMenuItem>Download</DropdownMenuItem>
-                          <DropdownMenuItem>Share</DropdownMenuItem>
-                          <DropdownMenuSeparator />
-                          <DropdownMenuItem className="text-red-600">Delete</DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </div>
+                    <div className="col-span-5">Name</div>
+                    <div className="col-span-2">Owner</div>
+                    <div className="col-span-2">Size</div>
+                    <div className="col-span-2">Last Modified</div>
                   </div>
                 </div>
-              ))}
-            </CardContent>
-          </Card>
 
-          <div className="mt-4 flex items-center justify-between text-sm text-slate-500">
-            <span>
-              Showing {knowledgeItems.length} of {knowledgeItems.length} items
-            </span>
-            <div className="flex items-center gap-2">
-              <Button variant="outline" size="sm" disabled>
-                Previous
-              </Button>
-              <span>Page 1 of 1</span>
-              <Button variant="outline" size="sm" disabled>
-                Next
-              </Button>
+                {knowledgeItems.map((item, index) => (
+                  <div
+                    key={item.id}
+                    className={`p-4 hover:bg-slate-50 transition-colors cursor-pointer ${index !== knowledgeItems.length - 1 ? "border-b" : ""}`}
+                    onClick={() => handleKnowledgeItemClick(item.id)}
+                  >
+                    <div className="grid grid-cols-12 gap-4 items-center text-sm">
+                      <div className="col-span-1">
+                        <Checkbox
+                          checked={selectedKnowledgeItems.includes(item.id)}
+                          onCheckedChange={(e) => {
+                            e.stopPropagation()
+                            handleKnowledgeItemSelect(item.id)
+                          }}
+                        />
+                      </div>
+                      <div className="col-span-5">
+                        <div className="flex items-center gap-3">
+                          <div className="h-8 w-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center text-white text-xs font-medium">
+                            {item.type === "PDF" ? "PDF" : item.type === "Website" ? "WEB" : "DOC"}
+                          </div>
+                          <div>
+                            <div className="font-medium text-slate-900">{item.name}</div>
+                            <div className="text-xs text-slate-500">{item.pages}</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-span-2">
+                        <div className="flex items-center gap-2">
+                          <Avatar className="h-6 w-6">
+                            <AvatarFallback className="text-xs">
+                              {item.owner.replace("@", "").substring(0, 2).toUpperCase()}
+                            </AvatarFallback>
+                          </Avatar>
+                          <span className="text-slate-600">{item.owner}</span>
+                        </div>
+                      </div>
+                      <div className="col-span-2 text-slate-600">{item.size}</div>
+                      <div className="col-span-2 flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <Badge variant={item.status === "synced" ? "default" : "secondary"} className="text-xs">
+                            {item.status}
+                          </Badge>
+                          <span className="text-slate-500 text-xs">{item.lastEdited}</span>
+                        </div>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button 
+                              variant="ghost" 
+                              size="sm" 
+                              className="h-8 w-8 p-0"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              <MoreHorizontal className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuItem>Edit</DropdownMenuItem>
+                            <DropdownMenuItem>Download</DropdownMenuItem>
+                            <DropdownMenuItem>Share</DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem className="text-red-600">Delete</DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+
+            <div className="mt-4 flex items-center justify-between text-sm text-slate-500">
+              <span>
+                Showing {knowledgeItems.length} of {knowledgeItems.length} items
+              </span>
+              <div className="flex items-center gap-2">
+                <Button variant="outline" size="sm" disabled>
+                  Previous
+                </Button>
+                <span>Page 1 of 1</span>
+                <Button variant="outline" size="sm" disabled>
+                  Next
+                </Button>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  )
+    )
+  }
 
   const renderWorkflows = () => (
     <div className="flex-1 overflow-auto p-6 bg-slate-50/50">
@@ -3168,6 +3330,14 @@ export default function ArketicClone() {
     </div>
   )
 
+  const renderCompliance = () => (
+    <div className="flex-1 overflow-auto p-6 bg-slate-50/50 dark:bg-slate-900/50">
+      <div className="max-w-7xl mx-auto">
+        <ComplianceLibraryTab />
+      </div>
+    </div>
+  )
+
   const renderContent = () => {
     switch (activeSection) {
       case "analytics":
@@ -3178,6 +3348,8 @@ export default function ArketicClone() {
         return renderChat()
       case "knowledge":
         return renderKnowledge()
+      case "compliance":
+        return renderCompliance()
       case "services":
         return renderServices()
       case "workflows":

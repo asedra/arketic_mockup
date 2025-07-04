@@ -1,3 +1,6 @@
+"use client"
+
+import { useState } from "react"
 import { Plus, Upload, RefreshCw, FolderPlus, MoreHorizontal } from "lucide-react"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
